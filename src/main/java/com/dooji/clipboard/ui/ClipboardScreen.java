@@ -2,6 +2,7 @@ package com.dooji.clipboard.ui;
 
 import com.dooji.clipboard.ClipboardItem;
 import com.dooji.clipboard.manager.ClipboardManager;
+import com.dooji.clipboard.manager.ClipboardConfig;
 import com.dooji.omnilib.OmnilibClient;
 import com.dooji.omnilib.ui.OmniListWidget;
 import com.dooji.omnilib.ui.OmniField;
@@ -19,15 +20,19 @@ import java.util.stream.Collectors;
 public class ClipboardScreen extends Screen {
     private OmniField searchField;
     private OmniListWidget listWidget;
+    private ClipboardConfig config;
     private List<ClipboardItem> originalList;
     private List<ClipboardItem> filteredList;
     private String searchQuery = "";
 
-    public ClipboardScreen(List<ClipboardItem> items) {
+    private static final Identifier LAMP_OFF = Identifier.of("minecraft", "textures/block/redstone_lamp.png");
+
+    public ClipboardScreen(List<ClipboardItem> items, ClipboardConfig config) {
         super(Text.of("Clipboard"));
         
         this.originalList = new ArrayList<>(items);
         this.filteredList = new ArrayList<>(originalList);
+        this.config = config;
     }
 
     @Override
@@ -126,6 +131,24 @@ public class ClipboardScreen extends Screen {
     }
 
     private void onItemClicked(int index) {
+        if (!config.enabled) {
+            OmnilibClient.showToast(
+                Text.translatable("clipboard.disabled.title"),
+                Text.translatable("clipboard.disabled.message"),
+                4000L,
+                0xFFFFFF,
+                0xAAAAAA,
+                null,
+                LAMP_OFF,
+                null,
+                16,
+                170,
+                32
+            );
+
+            return;
+        }
+
         ClipboardItem item = filteredList.get(index);
         boolean shiftDown = Screen.hasShiftDown();
         if (shiftDown) {
@@ -139,6 +162,24 @@ public class ClipboardScreen extends Screen {
     }
 
     private void onItemCopied(String itemText) {
+        if (!config.enabled) {
+            OmnilibClient.showToast(
+                Text.translatable("clipboard.disabled.title"),
+                Text.translatable("clipboard.disabled.message"),
+                4000L,
+                0xFFFFFF,
+                0xAAAAAA,
+                null,
+                LAMP_OFF,
+                null,
+                16,
+                170,
+                32
+            );
+
+            return;
+        }
+
         ClipboardManager.addEntry(itemText, ClipboardManager.DATE_FORMAT.format(new java.util.Date()));
 
         this.originalList = ClipboardManager.getHistory();
@@ -146,6 +187,24 @@ public class ClipboardScreen extends Screen {
     }
 
     private void onItemDeleted(String itemText) {
+        if (!config.enabled) {
+            OmnilibClient.showToast(
+                Text.translatable("clipboard.disabled.title"),
+                Text.translatable("clipboard.disabled.message"),
+                4000L,
+                0xFFFFFF,
+                0xAAAAAA,
+                null,
+                LAMP_OFF,
+                null,
+                16,
+                170,
+                32
+            );
+            
+            return;
+        }
+
         ClipboardManager.removeEntry(itemText);
 
         this.originalList = ClipboardManager.getHistory();
