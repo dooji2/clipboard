@@ -5,7 +5,7 @@
     "key.clipboard.toggle_enabled": "Toggle Clipboard",
     "screen.clipboard.title": "Clipboard",
     "clipboard.welcome.title": "Welcome to Clipboard",
-    "clipboard.welcome.message": "Toggle Clipboard with %s",
+    "clipboard.welcome.message": "Open the Clipboard screen with %s",
     "clipboard.persistent.title": "Persistent Clipboard",
     "clipboard.persistent.message.enabled": "Clipboard is now persistent.",
     "clipboard.persistent.message.disabled": "Clipboard is now temporary.",
