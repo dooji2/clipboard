@@ -60,8 +60,6 @@ public class ClipboardManager {
     }
 
     public static void removeEntry(String text) {
-        if (!config.enabled) return;
-
         history.removeIf(item -> item.getText().equals(text));
         if (config.persistent) {
             saveHistory();
@@ -69,14 +67,12 @@ public class ClipboardManager {
     }
 
     public static String getLastEntry() {
-        if (!config.enabled || history.isEmpty()) return null;
+        if (history.isEmpty()) return null;
 
         return history.get(0).getText();
     }
 
     public static List<ClipboardItem> getHistory() {
-        if (!config.enabled) return new LinkedList<>();
-
         return new LinkedList<>(history);
     }
 

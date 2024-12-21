@@ -49,7 +49,7 @@ public class Clipboard implements ModInitializer {
             }
 
             if (openClipboardKey.wasPressed()) {
-                openClipboardScreen(client);
+                openClipboardScreen(client, config);
             }
 
             while (togglePersistentKey.wasPressed()) {
@@ -118,8 +118,8 @@ public class Clipboard implements ModInitializer {
         playClickSound(client);
     }
 
-    private void openClipboardScreen(MinecraftClient client) {
-        client.setScreen(new ClipboardScreen(ClipboardManager.getHistory()));
+    private void openClipboardScreen(MinecraftClient client, ClipboardConfig config) {
+        client.setScreen(new ClipboardScreen(ClipboardManager.getHistory(), config));
     }
 
     private void createToast(String titleKey, String messageKey, Object icon) {
