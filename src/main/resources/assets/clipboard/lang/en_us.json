@@ -1,0 +1,21 @@
+{
+    "key.clipboard.open": "Open Clipboard",
+    "key.clipboard.toggle_persistent": "Toggle Persistency",
+    "key.clipboard.toggle_prioritization": "Toggle Prioritization",
+    "key.clipboard.toggle_enabled": "Toggle Clipboard",
+    "screen.clipboard.title": "Clipboard",
+    "clipboard.welcome.title": "Welcome to Clipboard",
+    "clipboard.welcome.message": "Toggle Clipboard with %s",
+    "clipboard.persistent.title": "Persistent Clipboard",
+    "clipboard.persistent.message.enabled": "Clipboard is now persistent.",
+    "clipboard.persistent.message.disabled": "Clipboard is now temporary.",
+    "clipboard.prioritization.title": "System Clipboard",
+    "clipboard.prioritization.message.custom": "Prioritizing the custom clipboard.",
+    "clipboard.prioritization.message.system": "Prioritizing the system clipboard.",
+    "clipboard.toggle.title.enabled": "Clipboard Enabled",
+    "clipboard.toggle.title.disabled": "Clipboard Disabled",
+    "clipboard.toggle.message.enabled": "Clipboard is now enabled.",
+    "clipboard.toggle.message.disabled": "Clipboard is now disabled.",
+    "screen.clipboard.search": "Search...",
+    "screen.clipboard.recorded_on": "Recorded on: %s"
+}
