@@ -40,9 +40,10 @@ public class Clipboard implements ModInitializer {
         registerKeyBindings();
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (config.firstTime) {
-                String toggleKey = toggleEnabledKey.getBoundKeyLocalizedText().getString();
-                createToast("clipboard.welcome.title", "clipboard.welcome.message", toggleKey, new ItemStack(Items.WRITABLE_BOOK));
+            if (config.firstTime && client.player != null) {
+                String openKey = openClipboardKey.getBoundKeyLocalizedText().getString();
+                createToast("clipboard.welcome.title", "clipboard.welcome.message", openKey, LAMP_ON);
+                playClickSound(client);
                 config.firstTime = false;
                 config.save();
             }
