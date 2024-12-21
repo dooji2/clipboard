@@ -16,6 +16,8 @@
     "clipboard.toggle.title.disabled": "Clipboard Disabled",
     "clipboard.toggle.message.enabled": "Clipboard is now enabled.",
     "clipboard.toggle.message.disabled": "Clipboard is now disabled.",
+    "clipboard.disabled.title": "Clipboard Disabled",
+    "clipboard.disabled.message": "Enable Clipboard to modify contents",
     "screen.clipboard.search": "Search...",
     "screen.clipboard.recorded_on": "Recorded on: %s"
 }
