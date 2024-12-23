@@ -24,14 +24,9 @@ import org.lwjgl.glfw.GLFW;
 
 public class Clipboard implements ModInitializer {
     public static final String MOD_ID = "clipboard";
-
     private static final Identifier LAMP_ON = Identifier.of("minecraft", "textures/block/redstone_lamp_on.png");
-    private static final Identifier LAMP_OFF = Identifier.of("minecraft", "textures/block/redstone_lamp.png");
 
     private static KeyBinding openClipboardKey;
-    private static KeyBinding togglePersistentKey;
-    private static KeyBinding togglePrioritizationKey;
-    private static KeyBinding toggleEnabledKey;
 
     @Override
     public void onInitialize() {
@@ -51,79 +46,19 @@ public class Clipboard implements ModInitializer {
             if (openClipboardKey.wasPressed()) {
                 openClipboardScreen(client, config);
             }
-
-            while (togglePersistentKey.wasPressed()) {
-                togglePersistent(client, config);
-            }
-
-            while (togglePrioritizationKey.wasPressed()) {
-                togglePrioritization(client, config);
-            }
-
-            while (toggleEnabledKey.wasPressed()) {
-                toggleEnabled(client, config);
-            }
         });
     }
 
-    // you'll have to deal with this mess until I make a gui config thingy in omnilib
     private void registerKeyBindings() {
         openClipboardKey = registerKey("key.clipboard.open", GLFW.GLFW_KEY_B);
-        togglePersistentKey = registerKey("key.clipboard.toggle_persistent", GLFW.GLFW_KEY_O);
-        togglePrioritizationKey = registerKey("key.clipboard.toggle_prioritization", GLFW.GLFW_KEY_Z);
-        toggleEnabledKey = registerKey("key.clipboard.toggle_enabled", GLFW.GLFW_KEY_I);
     }
 
     private KeyBinding registerKey(String key, int keyCode) {
         return KeyBindingHelper.registerKeyBinding(new KeyBinding(key, InputUtil.Type.KEYSYM, keyCode, "screen.clipboard.title"));
     }
 
-    private void togglePersistent(MinecraftClient client, ClipboardConfig config) {
-        config.persistent = !config.persistent;
-        config.save();
-
-        createToast(
-                "clipboard.persistent.title",
-                "clipboard.persistent.message." + (config.persistent ? "enabled" : "disabled"),
-                new ItemStack(Items.WRITABLE_BOOK)
-        );
-        
-        playClickSound(client);
-    }
-
-    private void togglePrioritization(MinecraftClient client, ClipboardConfig config) {
-        config.prioritize = config.prioritize.equals("custom") ? "system" : "custom";
-        config.save();
-
-        ItemStack icon = config.prioritize.equals("custom") ? new ItemStack(Items.ENCHANTED_BOOK) : new ItemStack(Items.BOOK);
-        createToast(
-                "clipboard.prioritization.title",
-                "clipboard.prioritization.message." + config.prioritize,
-                icon
-        );
-
-        playClickSound(client);
-    }
-
-    private void toggleEnabled(MinecraftClient client, ClipboardConfig config) {
-        config.enabled = !config.enabled;
-        config.save();
-
-        createToast(
-                "clipboard.toggle.title." + (config.enabled ? "enabled" : "disabled"),
-                "clipboard.toggle.message." + (config.enabled ? "enabled" : "disabled"),
-                config.enabled ? LAMP_ON : LAMP_OFF
-        );
-
-        playClickSound(client);
-    }
-
     private void openClipboardScreen(MinecraftClient client, ClipboardConfig config) {
         client.setScreen(new ClipboardScreen(ClipboardManager.getHistory(), config));
-    }
-
-    private void createToast(String titleKey, String messageKey, Object icon) {
-        createToast(titleKey, messageKey, "", icon);
     }
 
     private void createToast(String titleKey, String messageKey, String placeholder, Object icon) {
