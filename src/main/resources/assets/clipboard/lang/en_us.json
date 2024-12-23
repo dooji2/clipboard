@@ -19,5 +19,18 @@
     "clipboard.disabled.title": "Clipboard Disabled",
     "clipboard.disabled.message": "Enable Clipboard to modify contents",
     "screen.clipboard.search": "Search...",
-    "screen.clipboard.recorded_on": "Recorded on: %s"
+    "screen.clipboard.recorded_on": "Recorded on: %s",
+    "clipboard.option.persistence.description": "Save your Clipboard",
+    "clipboard.option.persistence.enabled": "Enabled",
+    "clipboard.option.persistence.disabled": "Disabled",
+    "clipboard.option.clipboard_type.description": "Use system or custom clipboard",
+    "clipboard.option.clipboard_type.custom": "Custom",
+    "clipboard.option.clipboard_type.system": "System",
+    "clipboard.option.toggle.description": "Toggle Clipboard",
+    "clipboard.option.toggle.on": "On",
+    "clipboard.option.toggle.off": "Off",
+    "clipboard.config.title": "Clipboard Settings",
+    "clipboard.config.search": "Search...",
+    "clipboard.config.save": "Save",
+    "clipboard.config.cancel": "Cancel"
 }
