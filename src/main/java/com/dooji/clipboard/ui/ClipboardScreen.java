@@ -1,8 +1,8 @@
 package com.dooji.clipboard.ui;
 
 import com.dooji.clipboard.ClipboardItem;
-import com.dooji.clipboard.manager.ClipboardManager;
 import com.dooji.clipboard.manager.ClipboardConfig;
+import com.dooji.clipboard.manager.ClipboardManager;
 import com.dooji.omnilib.OmnilibClient;
 import com.dooji.omnilib.ui.OmniListWidget;
 import com.dooji.omnilib.ui.OmniField;
@@ -28,7 +28,7 @@ public class ClipboardScreen extends Screen {
     private static final Identifier LAMP_OFF = Identifier.of("minecraft", "textures/block/redstone_lamp.png");
 
     public ClipboardScreen(List<ClipboardItem> items, ClipboardConfig config) {
-        super(Text.of("Clipboard"));
+        super(Text.translatable("screen.clipboard.title"));
         
         this.originalList = new ArrayList<>(items);
         this.filteredList = new ArrayList<>(originalList);
@@ -41,10 +41,14 @@ public class ClipboardScreen extends Screen {
 
         int topPadding = 40;
         int fieldWidth = 200;
-        int fieldX = (this.width - fieldWidth) / 2;
+        int buttonWidth = 20;
+        int spacing = 5;
+
+        int totalWidth = fieldWidth + buttonWidth + spacing;
+        int centerX = (this.width - totalWidth) / 2;
         this.searchField = OmnilibClient.createOmniField(
                 this.textRenderer,
-                fieldX,
+                centerX,
                 topPadding,
                 fieldWidth,
                 20,
@@ -53,6 +57,18 @@ public class ClipboardScreen extends Screen {
                 this::onSearchChanged
         );
         this.addDrawableChild(this.searchField);
+
+        OmniButton settingsButton = OmnilibClient.createOmniButton(
+                centerX + fieldWidth + spacing,
+                topPadding,
+                buttonWidth,
+                20,
+                Identifier.of("clipboard", "textures/gui/settings.png"),
+                0x80000000,
+                0x80999999,
+                this::onSettingsClicked
+        );
+        this.addDrawableChild(settingsButton);
 
         int listTop = topPadding + 30;
         int listBottom = this.height;
@@ -86,6 +102,63 @@ public class ClipboardScreen extends Screen {
     private void onSearchChanged(String query) {
         this.searchQuery = query;
         setFilteredItems();
+    }
+
+    private void onSettingsClicked() {
+        ClipboardConfig config = ClipboardManager.getConfig();
+
+        List<ClipboardOption> options = List.of(
+                new ClipboardOption(
+                        "",
+                        Text.translatable("clipboard.option.persistence.description").getString(),
+                        new String[]{
+                                Text.translatable("clipboard.option.persistence.enabled").getString(),
+                                Text.translatable("clipboard.option.persistence.disabled").getString()
+                        },
+                        config.persistent ? 0 : 1,
+                        value -> {
+                            config.persistent = value.equals(Text.translatable("clipboard.option.persistence.enabled").getString());
+                            config.save();
+                        }
+                ),
+                new ClipboardOption(
+                        "",
+                        Text.translatable("clipboard.option.clipboard_type.description").getString(),
+                        new String[]{
+                                Text.translatable("clipboard.option.clipboard_type.custom").getString(),
+                                Text.translatable("clipboard.option.clipboard_type.system").getString()
+                        },
+                        "custom".equals(config.prioritize) ? 0 : 1,
+                        value -> {
+                            config.prioritize = value.toLowerCase();
+                            config.save();
+                        }
+                ),
+                new ClipboardOption(
+                        "",
+                        Text.translatable("clipboard.option.toggle.description").getString(),
+                        new String[]{
+                                Text.translatable("clipboard.option.toggle.on").getString(),
+                                Text.translatable("clipboard.option.toggle.off").getString()
+                        },
+                        config.enabled ? 0 : 1,
+                        value -> {
+                            config.enabled = value.equals(Text.translatable("clipboard.option.toggle.on").getString());
+                            config.save();
+                        }
+                )
+        );
+
+        this.client.setScreen(new ClipboardConfigScreen(
+                this,
+                Text.translatable("clipboard.config.title").getString(),
+                options,
+                () -> {
+                    config.save();
+                    this.client.setScreen(this);
+                },
+                () -> this.client.setScreen(this)
+        ));
     }
 
     private void setFilteredItems() {
