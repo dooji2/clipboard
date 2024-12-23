@@ -19,7 +19,7 @@ public class KeyboardMixin {
         ClipboardConfig config = ClipboardManager.getConfig();
         if (!config.enabled) return;
 
-        String clipboardText = null;
+        String clipboardText;
 
         if ("custom".equals(config.prioritize)) {
             clipboardText = ClipboardManager.getLastEntry();
@@ -32,17 +32,15 @@ public class KeyboardMixin {
         }
     }
 
-    @Inject(method = "setClipboard", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setClipboard", at = @At("HEAD"))
     private void onSetClipboard(String clipboard, CallbackInfo ci) {
         ClipboardConfig config = ClipboardManager.getConfig();
-        
+
         if (!config.enabled) return;
 
         if (clipboard != null && !clipboard.isEmpty()) {
-            ClipboardHelper.copyToSystemClipboard(clipboard);
             ClipboardManager.addEntry(clipboard);
+            ClipboardHelper.copyToSystemClipboard(clipboard);
         }
-
-        ci.cancel();
     }
 }
